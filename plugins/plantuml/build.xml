@@ -1,0 +1,40 @@
+<project name="plantuml" default="jar" basedir=".">
+
+  <path id="classpath">
+     <pathelement path="../../ant-build/classes"/>
+     <fileset dir="../../lib">
+        <include name="*.jar" />
+     </fileset>
+     <fileset dir="../../WebContent/WEB-INF/lib">
+        <include name="*.jar" />
+     </fileset>
+     <fileset dir="lib">
+        <include name="*.jar" />
+     </fileset>
+  </path>    
+
+  <target name="clean">
+    <delete dir="build"/>
+    <delete file="plantuml.jar"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build"/>
+    <javac srcdir="src" destdir="build">
+      <classpath refid="classpath" />
+    </javac>
+    <jar destfile="plantuml.jar" >
+      <fileset dir="lib">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="build">
+        <include name="**/*"/>
+      </fileset>
+      <manifest>
+        <attribute name="Plugin-Contributions" value="net.hillsdon.reviki.plugins.plantuml.PlantUMLMacro"/>
+      </manifest>
+    </jar>
+  </target>
+
+</project>
+

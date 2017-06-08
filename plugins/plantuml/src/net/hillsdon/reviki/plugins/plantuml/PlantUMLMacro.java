@@ -17,13 +17,13 @@ package net.hillsdon.reviki.plugins.plantuml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
 import net.hillsdon.reviki.vc.PageInfo;
 import net.hillsdon.reviki.wiki.renderer.macro.Macro;
 import net.hillsdon.reviki.wiki.renderer.macro.ResultFormat;
-import org.apache.commons.io.Charsets;
 
 public class PlantUMLMacro implements Macro {
 
@@ -49,7 +49,7 @@ public class PlantUMLMacro implements Macro {
 
     final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     final DeflaterOutputStream out = new DeflaterOutputStream(bytes, deflater);
-    out.write(text.getBytes(Charsets.UTF_8));
+    out.write(text.getBytes(Charset.forName("UTF-8")));
     out.flush();
     out.close();
     bytes.flush();
@@ -57,6 +57,10 @@ public class PlantUMLMacro implements Macro {
     return bytes.toByteArray();
   }
 
+  /*
+   * Encoding adapted to Java from Javascript API Client Code:
+   * http://plantuml.com/code-javascript-synchronous
+   */
   private static String encode(byte[] deflated) {
     final StringBuilder result = new StringBuilder();
     for(int i=0;i<deflated.length;i+=3) {
